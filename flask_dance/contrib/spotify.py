@@ -52,6 +52,7 @@ def make_spotify_blueprint(
         base_url="https://api.spotify.com",
         authorization_url="https://accounts.spotify.com/authorize",
         token_url="https://accounts.spotify.com/api/token",
+        auto_refresh_url="https://accounts.spotify.com/api/token",
         redirect_url=redirect_url,
         redirect_to=redirect_to,
         login_url=login_url,
