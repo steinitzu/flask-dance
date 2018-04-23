@@ -183,7 +183,7 @@ class OAuth2ConsumerBlueprint(BaseOAuthConsumerBlueprint):
         )
         url, state = self.session.authorization_url(
             self.authorization_url, state=self.state,
-            **self.authorization_url_params
+            **self.authorization_url_params, **request.args
         )
         state_key = "{bp.name}_oauth_state".format(bp=self)
         flask.session[state_key] = state
