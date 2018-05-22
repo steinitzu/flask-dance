@@ -154,12 +154,13 @@ class OAuth2ConsumerBlueprint(BaseOAuthConsumerBlueprint):
         and your website.
         :return:
         """
+        scope = request.args.get('scope', self.scope)
         ret = self.session_class(
             client_id=self._client_id,
             client=self.client,
             auto_refresh_url=self.auto_refresh_url,
             auto_refresh_kwargs=self.auto_refresh_kwargs,
-            scope=self.scope,
+            scope=scope,
             state=self.state,
             blueprint=self,
             base_url=self.base_url,
@@ -181,11 +182,13 @@ class OAuth2ConsumerBlueprint(BaseOAuthConsumerBlueprint):
         self.session.redirect_uri = url_for(
             ".authorized", next=request.args.get('next'), _external=True,
         )
+        rargs = request.args.to_dict(flat=True)
+        rargs.pop('scope', None)
         url, state = self.session.authorization_url(
             self.authorization_url, state=self.state,
             **dict(
                 self.authorization_url_params,
-                **request.args.to_dict(flat=True)
+                **rargs
             )
         )
         state_key = "{bp.name}_oauth_state".format(bp=self)
